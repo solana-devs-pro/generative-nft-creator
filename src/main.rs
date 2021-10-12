@@ -1,5 +1,6 @@
 use std::collections::HashMap;
-use crate::nft::{AttributeType, NFT};
+use crate::nft::NFT;
+use crate::attributes::AttributeType;
 
 // image stuff
 use image::GenericImageView;
