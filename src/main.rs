@@ -1,5 +1,4 @@
 use std::collections::HashMap;
-use rand::distributions::{Distribution, Uniform};
 use crate::attributes::{Attribute, AttrType};
 
 mod attributes;
