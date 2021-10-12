@@ -4,8 +4,6 @@ use crate::attributes::{Attribute, AttrType};
 
 mod attributes;
 
-const TOTAL_NUMBER_OF_ITEMS: usize = 88;
-
 #[derive(Clone)]
 struct NFT {
     num: usize,
@@ -19,12 +17,15 @@ fn main() {
     
     let mut nfts : Vec<NFT> = vec![];
 
-    for i in 0..TOTAL_NUMBER_OF_ITEMS {
+    for i in 0..attributes::TOTAL_NUMBER_OF_ITEMS {
+
+        // Setup attributes
         let mut attributes = HashMap::new();
         attributes.insert(AttrType::Background, backgrounds[i].clone());
         attributes.insert(AttrType::Body, bodies[i].clone());
         attributes.insert(AttrType::Face, faces[i].clone());
 
+        // setup NFT
         let nft = NFT { 
             num: i+1,
             attributes: attributes,

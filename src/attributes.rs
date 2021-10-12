@@ -1,6 +1,8 @@
 use rand::thread_rng;
 use rand::seq::SliceRandom;
 
+pub const TOTAL_NUMBER_OF_ITEMS: usize = 88;
+
 pub struct AttrDistribution {
     name: String,
     total_number: usize,
@@ -54,14 +56,19 @@ pub fn get_all(attr_type: AttrType) -> Vec<Attribute> {
     };
 
     for attr_dist in attr_dists {
-        let total_num: f32 = attr_dist.total_number as f32;
+        // need to cast to f32
+        let num_of_attrs: f32 = attr_dist.total_number as f32;
+        let total_num: f32 = TOTAL_NUMBER_OF_ITEMS as f32; 
+        // setup attribute
         let attribute = Attribute { 
             name: attr_dist.name,
             attr_type: attr_type.clone(),
-            rarity: total_num / 88.0,
+            rarity: num_of_attrs / total_num,
         };
         return_types.extend(vec![attribute; attr_dist.total_number]);
     }
+    // make sure to shuffle before returning
+    // https://docs.rs/rand/0.6.4/rand/seq/trait.SliceRandom.html
     return_types.shuffle(&mut thread_rng());
     return_types
 }
