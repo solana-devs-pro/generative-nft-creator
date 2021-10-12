@@ -1,42 +1,19 @@
 use std::collections::HashMap;
-use crate::attributes::{Attribute, AttrType};
+use crate::nft::{AttributeType, NFT};
+
+// image stuff
+use image::GenericImageView;
 
 mod attributes;
-
-#[derive(Clone)]
-struct NFT {
-    num: usize,
-    attributes: HashMap<AttrType, Attribute>,
-}
+mod nft;
 
 fn main() {
-    let backgrounds = attributes::get_all(AttrType::Background);
-    let bodies = attributes::get_all(AttrType::Body);
-    let faces = attributes::get_all(AttrType::Face);
-    
-    let mut nfts : Vec<NFT> = vec![];
-
-    for i in 0..attributes::TOTAL_NUMBER_OF_ITEMS {
-
-        // Setup attributes
-        let mut attributes = HashMap::new();
-        attributes.insert(AttrType::Background, backgrounds[i].clone());
-        attributes.insert(AttrType::Body, bodies[i].clone());
-        attributes.insert(AttrType::Face, faces[i].clone());
-
-        // setup NFT
-        let nft = NFT { 
-            num: i+1,
-            attributes: attributes,
-        };
-        nfts.push(nft);
-    }
+    let nfts = nft::get_all();
 
     for nft in nfts {
         println!("nft id: {}", nft.num);
-        println!("\t {:?}", nft.attributes.get(&AttrType::Background).unwrap());
-        println!("\t {:?}", nft.attributes.get(&AttrType::Body).unwrap());
-        println!("\t {:?}", nft.attributes.get(&AttrType::Face).unwrap());
+        println!("\t {:?}", nft.attributes.get(&AttributeType::Background).unwrap());
+        println!("\t {:?}", nft.attributes.get(&AttributeType::Body).unwrap());
+        println!("\t {:?}", nft.attributes.get(&AttributeType::Face).unwrap());
     }
-    
 }
