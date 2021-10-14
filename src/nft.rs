@@ -4,6 +4,7 @@ use rand::seq::SliceRandom;
 use crate::attributes::{self, Attribute, AttributeType};
 
 pub const TOTAL_EDITION_SIZE: usize = 88;
+const SPECIAL_NFT_IDS: [usize; 2] = [8, 88];
 
 #[derive(Clone)]
 pub struct NFT {
@@ -15,6 +16,7 @@ pub fn get_all() -> Vec<NFT> {
     let backgrounds = attributes::get_attributes(AttributeType::Background);
     let bodies = attributes::get_attributes(AttributeType::Body);
     let faces = attributes::get_attributes(AttributeType::Face);
+    let horns = attributes::get_attributes(AttributeType::Horn);
 
     let mut nfts : Vec<NFT> = vec![];
 
@@ -25,19 +27,30 @@ pub fn get_all() -> Vec<NFT> {
         attributes.insert(AttributeType::Background, backgrounds[i].clone());
         attributes.insert(AttributeType::Body, bodies[i].clone());
         attributes.insert(AttributeType::Face, faces[i].clone());
+        attributes.insert(AttributeType::Horn, horns[i].clone());
+       
+        let num = i+1;
 
-        // setup NFT
-        let nft = NFT { 
-            num: i+1,
-            attributes: attributes,
-        };
-        nfts.push(nft);
-    }
+        if SPECIAL_NFT_IDS.contains(&num) {
+            println!("skip {}", num);
+            continue; // add special NFT here
+        } else {
+            // setup NFT
+            let nft = NFT { 
+                num: num,
+                attributes: attributes,
+            };
+            nfts.push(nft);
+        }
+   }
 
     // get special ones to add
     let special_nfts = get_special_nfts();
     nfts.extend(special_nfts);
 
+    // shuffle
+    nfts.shuffle(&mut thread_rng());
+    
     // return the nfts
     nfts
 }
